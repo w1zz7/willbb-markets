@@ -244,6 +244,22 @@ Without an AV key:
 
 ## Deployment
 
+### Netlify (recommended — `netlify.toml` is included)
+
+`netlify.toml` pins Node 20 LTS and sets cache headers on `/api/markets/*`. Netlify's built-in Next.js Runtime handles SSR pages, the API routes (deployed as on-demand Netlify Functions), and ISR cache headers automatically — no plugin block needed.
+
+```bash
+npx netlify-cli login
+npx netlify-cli init       # link this folder to a new or existing site
+npx netlify-cli deploy --prod
+```
+
+Or via the Netlify dashboard:
+1. **Add new site → Import from Git → choose this repo**
+2. Build settings auto-detect from `netlify.toml` (build cmd `npm run build`, publish `.next`)
+3. Optional: add `ALPHA_VANTAGE_API_KEY` under **Site settings → Environment variables** to unlock News+Sentiment, Smart Money, Macro, Calendars, Symbol Search, Transcripts. Without it, those panels show "unavailable" and everything else still works.
+4. Deploy. Subsequent pushes to `main` auto-deploy.
+
 ### Vercel
 
 ```bash
@@ -251,16 +267,6 @@ npx vercel --prod
 ```
 
 No `vercel.json` needed — Next.js conventions are auto-detected. Add `ALPHA_VANTAGE_API_KEY` in the Vercel dashboard's env vars.
-
-### Netlify
-
-`netlify.toml` is included (Node 20, cache headers on `/api/markets/*`):
-
-```bash
-npx netlify-cli login
-npx netlify-cli init
-npx netlify-cli deploy --prod
-```
 
 ### Other Node hosts
 

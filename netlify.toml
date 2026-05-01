@@ -1,0 +1,29 @@
+# Netlify build config for the willBB Markets Terminal.
+#
+# Netlify auto-detects Next.js 15 and applies its built-in Next.js Runtime
+# (formerly @netlify/plugin-nextjs) — no explicit plugin block needed. The
+# runtime handles SSR pages, the `/api/markets/*` routes (deployed as
+# on-demand Netlify Functions), and ISR cache headers automatically.
+#
+# Pin Node 20 LTS because Next 15 + React 19 requires Node 18.18+.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# Cache headers for the markets data proxy. The route handlers set their own
+# Cache-Control via NextResponse already; this just guarantees Netlify's edge
+# respects the stale-while-revalidate window.
+[[headers]]
+  for = "/api/markets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=30, s-maxage=60, stale-while-revalidate=120"
+
+# To enable Alpha Vantage features (News+Sentiment, Smart Money, Macro,
+# Calendars, Symbol Search, Transcripts), set ALPHA_VANTAGE_API_KEY in
+# Netlify's site settings > Environment variables. Free key at
+# https://www.alphavantage.co/support/#api-key
