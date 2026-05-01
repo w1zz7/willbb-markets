@@ -229,16 +229,34 @@ Open <http://localhost:3000>. The terminal renders fullscreen.
 | `npm run start` | Run the production build locally |
 | `npm run typecheck` | `tsc --noEmit` (0 errors expected) |
 
-### Optional environment variables
+### Required environment variables
+
+The app **works fully without any env vars** — Yahoo + CoinGecko + Stooq +
+synthetic fallback covers charts/quotes/equity-research/screeners. However,
+the following panels are powered by **Alpha Vantage** and render empty
+without a key:
+
+- News + Sentiment
+- Smart Money (Insider transactions, Institutional holdings)
+- Macro (Yield curve, CPI, Fed Funds, GDP, Inflation, Unemployment)
+- Earnings + IPO calendars
+- Symbol Search autocomplete
+- Earnings Transcripts
+
+| Env var | Required? | How to get |
+|---------|-----------|------------|
+| `ALPHA_VANTAGE_API_KEY` | Optional (recommended) | <https://www.alphavantage.co/support/#api-key> (free, 25 calls/day) |
+
+**Local development:**
 
 ```bash
 # .env.local
-ALPHA_VANTAGE_API_KEY=your_free_key   # https://www.alphavantage.co/support/#api-key
+ALPHA_VANTAGE_API_KEY=your_free_key
 ```
 
-Without an AV key:
-- News+Sentiment, Symbol Search, Smart Money, Transcript, Macro panel, Calendars all show "unavailable"
-- Charts, quotes, equity research, screeners, watchlist, technicals **still work** on Yahoo + Stooq + CoinGecko (zero keys)
+**Netlify production:** Site → Site settings → Environment variables → add
+`ALPHA_VANTAGE_API_KEY`. Then **Deploys → Trigger deploy → Clear cache and
+deploy site** so the function bundle picks up the new value.
 
 ---
 
