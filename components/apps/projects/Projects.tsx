@@ -89,14 +89,6 @@ const CARDS: Card[] = [
     icon: "/icons/mic.svg",
   },
   {
-    appId: "leadership",
-    label: "Leadership - Drexel Ecosystem",
-    summary:
-      "Good Idea Fund · DCG · Google Developer Group · High Finance Program. $100k+ allocated, 14.3M+ followers overseen.",
-    metric: "4 active roles",
-    icon: "/icons/users.svg",
-  },
-  {
     appId: "bulletproof",
     label: "Bulletproof AI",
     summary:
